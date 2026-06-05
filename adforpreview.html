@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CotoInLinux</title>
+    <style>
+        body { 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            height: 100vh; font-family: 'Segoe UI', sans-serif; background: #f4f4f4; margin: 0; 
+            overflow: hidden; 
+        }
+        
+        /* Estilos de Carga Inicial (20 segundos) */
+        #pantalla-carga { text-align: center; animation: fadeIn 1s; width: 80%; }
+        #logo { width: 100px; }
+        #barra-carga-total { width: 100%; max-width: 400px; height: 10px; background: #ddd; margin: 20px auto; border-radius: 5px; overflow: hidden; }
+        #progreso-total { width: 0%; height: 100%; background: #d32f2f; transition: width 20s linear; }
+
+        /* Estilos Anuncios */
+        #contenedor-anuncios { display: none; width: 80%; max-width: 500px; }
+        .anuncio-wrapper { background: white; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border-radius: 12px; overflow: hidden; }
+        .barra-tiempo { height: 6px; background: #d32f2f; width: 0%; transition: width 5s linear; }
+        .contenido-anuncio { padding: 25px; text-align: center; }
+        h3 { color: #d32f2f; margin-top: 0; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <!-- Pantalla de Carga -->
+    <div id="pantalla-carga">
+        <img src="logoforpreview.png" alt="Logo COTO">
+        <h3>CotoInLinux</h3>
+        <div id="barra-carga-total"><div id="progreso-total"></div></div>
+        <p id="texto-estado">Cargando servicios, anuncios y estilos...</p>
+    </div>
+
+    <!-- Contenedor Anuncios -->
+    <div id="contenedor-anuncios"></div>
+
+    <script>
+        const datos = [
+            { titulo: "Oferta Especial", descripcion: "30% de descuento en cortes seleccionados." },
+            { titulo: "Comunidad COTO", descripcion: "Acumulá puntos con tu tarjeta TCI." },
+            { titulo: "CotoInLinux", descripcion: "El sistema moderno para la gestión de sucursales. Esta versión es de codigo abierto." },
+            { titulo: "Nuevo Sistema", descripcion: "El sistema de anuncios nuevo de coto es mejor que el anterior. Hemos quitado la parte del turno de carniceria para menos información." }
+        ];
+
+        // 1. Lógica de Carga Inicial (20 segundos)
+        setTimeout(() => {
+            document.getElementById('progreso-total').style.width = "100%";
+        }, 500);
+
+        setTimeout(() => {
+            document.getElementById('pantalla-carga').style.display = "none";
+            document.getElementById('contenedor-anuncios').style.display = "block";
+            mostrarAnuncio();
+            setInterval(mostrarAnuncio, 5000);
+        }, 20500); // 20.5 segundos para completar la carga
+
+        // 2. Lógica de Anuncios
+        let indice = 0;
+        function mostrarAnuncio() {
+            const a = datos[indice];
+            const contenedor = document.getElementById('contenedor-anuncios');
+            contenedor.innerHTML = `
+                <div class="anuncio-wrapper">
+                    <div class="barra-tiempo" id="barra-temp"></div>
+                    <div class="contenido-anuncio">
+                        <h3>${a.titulo}</h3>
+                        <p>${a.descripcion}</p>
+                    </div>
+                </div>
+            `;
+            setTimeout(() => document.getElementById('barra-temp').style.width = "100%", 50);
+            indice = (indice + 1) % datos.length;
+        }
+    </script>
+</body>
+</html>
